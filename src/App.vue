@@ -7,16 +7,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import AccountForm from "./components/AccountForm.vue";
 import { useStore } from "./store";
 
 const store = useStore();
 
-const accounts = computed(() => store.accounts);
-
 const addAccount = () => store.addAccount();
-
 addAccount();
 </script>
 
