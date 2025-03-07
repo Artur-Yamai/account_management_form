@@ -15,7 +15,6 @@ const emits = defineEmits(["change"]);
 
 function handleChange(event: Event) {
   const target = event.target as HTMLSelectElement;
-  console.log("target.value", target.value);
   emits("change", target.value);
 }
 </script>

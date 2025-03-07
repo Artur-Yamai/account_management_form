@@ -1,12 +1,13 @@
 <template>
   <div class="form-row">
-    <LabelInput
-      :label="account.label"
+    <TextBox
+      placeholder="Метка (необязательно)"
+      :value="label"
       :maxLength="50"
-      @change="handleChange($event, 'label')"
+      @change="handleLabelChange"
     />
-    <TypeSelect :type="account.type" @change="handleTypeChange" />
-    <TextInput
+    <SelectBox :type="account.type" @change="handleTypeChange" />
+    <TextBox
       placeholder="Логин"
       :value="account.login"
       :maxLength="100"
@@ -14,7 +15,7 @@
       @change="handleChange($event, 'login')"
     />
 
-    <TextInput
+    <TextBox
       v-if="account.type === RecordType.local"
       placeholder="Пароль"
       type="password"
@@ -26,16 +27,27 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
-import LabelInput from "./LabelInput.vue";
-import TypeSelect from "./TypeSelect.vue";
-import TextInput from "./TextInput.vue";
+import { defineProps, defineEmits, computed } from "vue";
+import { LabelBox, SelectBox, TextBox } from "@/components";
 import { Account, RecordType, Label } from "@/store";
 
 const emits = defineEmits(["changeValue"]);
 const props = defineProps<{ account: Account }>();
 
 let savedPassword = props.account.password;
+
+const label = computed(() =>
+  props.account.label.map((item: Label) => item.text.trim()).join("; ")
+);
+
+function handleLabelChange(value: string) {
+  const account = { ...props.account, label };
+
+  account.label = value
+    ? value.split(";").map((text) => ({ text: text.trim() }))
+    : [];
+  emits("changeValue", account);
+}
 
 function handleTypeChange(value: RecordType) {
   const account = { ...props.account, type: value };
@@ -49,7 +61,7 @@ function handleTypeChange(value: RecordType) {
   emits("changeValue", account);
 }
 
-function handleChange(value: string | Label, key: keyof Account) {
+function handleChange(value: string, key: keyof Account) {
   emits("changeValue", { ...props.account, [key]: value });
 }
 </script>
