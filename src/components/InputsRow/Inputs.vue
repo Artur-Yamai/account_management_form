@@ -1,17 +1,23 @@
 <template>
   <div class="form-row">
     <input
-      :value="account.label"
+      :value="label"
       placeholder="Метка (необязательно)"
       class="form-row__control"
+      @blur="changeValue($event, 'label')"
     />
-    <select :value="account.type" class="form-row__control">
+    <select
+      :value="account.type"
+      @change="changeValue($event, 'type')"
+      class="form-row__control"
+    >
       <option value="Локальная">Локальная</option>
       <option value="LDAP">LDAP</option>
     </select>
     <input
       :value="account.login"
       placeholder="Логин"
+      @blur="changeValue($event, 'login')"
       class="form-row__control"
     />
     <input
@@ -19,16 +25,38 @@
       :value="account.password"
       type="password"
       placeholder="Пароль"
+      @blur="changeValue($event, 'password')"
       class="form-row__control"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-import { Account } from "@/store";
+import { defineProps, defineEmits, computed } from "vue";
+import { Account, RecordType } from "@/store";
 
-defineProps<{ account: Account }>();
+const emits = defineEmits(["changeValue"]);
+const props = defineProps<{ account: Account }>();
+
+const label = computed(() =>
+  props.account.label.map((item) => item.text).join("; ")
+);
+
+function changeValue(e: Event, key: keyof Account) {
+  const target = e.target as HTMLInputElement;
+  let value: string = target.value;
+  const account = { ...props.account };
+
+  if (key === "label") {
+    account.label = value.split(";").map((text) => ({ text: text.trim() }));
+  } else if (key === "type") {
+    account[key] = target.value as RecordType;
+  } else {
+    account[key] = value;
+  }
+
+  emits("changeValue", account);
+}
 </script>
 
 <style>

@@ -1,6 +1,6 @@
 <template>
   <div class="inputs-row mb-3">
-    <Inputs :account="account" />
+    <Inputs :account="account" @changeValue="emits('update', $event)" />
     <button
       class="btn btn-danger ms-2 text-white"
       @click="emits('remove', account.id)"
@@ -16,7 +16,7 @@ import Inputs from "./Inputs.vue";
 import { Account } from "@/store";
 import trashIcon from "@/assets/trash.svg";
 
-const emits = defineEmits(["remove"]);
+const emits = defineEmits(["update", "remove"]);
 defineProps<{ account: Account }>();
 </script>
 
