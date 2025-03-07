@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <h1>Главный заголовок страницы</h1>
+    <h1>Учетные записи</h1>
     <button @click="store.addAccount" class="btn btn-primary">+</button>
   </div>
 </template>
