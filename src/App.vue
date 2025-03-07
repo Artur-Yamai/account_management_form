@@ -1,11 +1,11 @@
 <template>
   <Header />
+  <Tooltip />
   <AccountForm />
 </template>
 
 <script setup lang="ts">
-import Header from "./components/Header.vue";
-import AccountForm from "./components/AccountForm.vue";
+import { Header, Tooltip, AccountForm } from "./components";
 </script>
 
 <style>
