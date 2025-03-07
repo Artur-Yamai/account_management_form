@@ -1,2 +1,1 @@
-let count = 0;
-export const generateId = (): string => `id::${++count}`;
+export const generateId = (): string => `id::${Date.now() * Math.random()}`;
