@@ -6,6 +6,10 @@
 
 <script setup lang="ts">
 import { Header, Tooltip, AccountForm } from "./components";
+import { useStore } from "@/store";
+
+const store = useStore();
+store.initialize();
 </script>
 
 <style>
