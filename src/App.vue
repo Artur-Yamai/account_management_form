@@ -1,20 +1,35 @@
-<script setup lang="ts"></script>
-
 <template>
-  <div>app</div>
+  <div class="header-with-button">
+    <h1>Главный заголовок страницы</h1>
+    <button @click="addAccount" class="btn btn-primary">+</button>
+  </div>
+  <AccountForm />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script setup lang="ts">
+import { computed } from "vue";
+import AccountForm from "./components/AccountForm.vue";
+import { useStore } from "./store";
+
+const store = useStore();
+
+const accounts = computed(() => store.accounts);
+
+const addAccount = () => store.addAccount();
+
+addAccount();
+</script>
+
+<style>
+#app {
+  max-width: 1080px;
+  margin: 0 auto;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.header-with-button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.75rem;
 }
 </style>
