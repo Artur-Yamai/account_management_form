@@ -1,0 +1,21 @@
+<template>
+  <select :value="type" @change="handleChange" class="form-row__control">
+    <option v-for="value in RecordType" :key="value" :value="value">
+      {{ value }}
+    </option>
+  </select>
+</template>
+
+<script setup lang="ts">
+import { defineProps, defineEmits } from "vue";
+import { RecordType } from "@/store";
+
+defineProps<{ type: RecordType }>();
+const emits = defineEmits(["change"]);
+
+function handleChange(event: Event) {
+  const target = event.target as HTMLSelectElement;
+  console.log("target.value", target.value);
+  emits("change", target.value);
+}
+</script>

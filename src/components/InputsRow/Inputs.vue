@@ -1,61 +1,56 @@
 <template>
   <div class="form-row">
-    <input
-      :value="label"
-      placeholder="Метка (необязательно)"
-      class="form-row__control"
-      @blur="changeValue($event, 'label')"
+    <LabelInput
+      :label="account.label"
+      :maxLength="50"
+      @change="handleChange($event, 'label')"
     />
-    <select
-      :value="account.type"
-      @change="changeValue($event, 'type')"
-      class="form-row__control"
-    >
-      <option value="Локальная">Локальная</option>
-      <option value="LDAP">LDAP</option>
-    </select>
-    <input
-      :value="account.login"
+    <TypeSelect :type="account.type" @change="handleTypeChange" />
+    <TextInput
       placeholder="Логин"
-      @blur="changeValue($event, 'login')"
-      class="form-row__control"
+      :value="account.login"
+      :maxLength="100"
+      :required="true"
+      @change="handleChange($event, 'login')"
     />
-    <input
-      v-if="account.type === 'Локальная'"
-      :value="account.password"
-      type="password"
+
+    <TextInput
+      v-if="account.type === RecordType.local"
       placeholder="Пароль"
-      @blur="changeValue($event, 'password')"
-      class="form-row__control"
+      type="password"
+      :value="account.password"
+      :required="true"
+      @change="handleChange($event, 'password')"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, computed } from "vue";
-import { Account, RecordType } from "@/store";
+import { defineProps, defineEmits } from "vue";
+import LabelInput from "./LabelInput.vue";
+import TypeSelect from "./TypeSelect.vue";
+import TextInput from "./TextInput.vue";
+import { Account, RecordType, Label } from "@/store";
 
 const emits = defineEmits(["changeValue"]);
 const props = defineProps<{ account: Account }>();
 
-const label = computed(() =>
-  props.account.label.map((item) => item.text).join("; ")
-);
+let savedPassword = props.account.password;
 
-function changeValue(e: Event, key: keyof Account) {
-  const target = e.target as HTMLInputElement;
-  let value: string = target.value;
-  const account = { ...props.account };
+function handleTypeChange(value: RecordType) {
+  const account = { ...props.account, type: value };
 
-  if (key === "label") {
-    account.label = value.split(";").map((text) => ({ text: text.trim() }));
-  } else if (key === "type") {
-    account[key] = target.value as RecordType;
+  if (value === RecordType.ldap) {
+    savedPassword = account.password;
+    account.password = null;
   } else {
-    account[key] = value;
+    account.password = savedPassword;
   }
-
   emits("changeValue", account);
+}
+
+function handleChange(value: string | Label, key: keyof Account) {
+  emits("changeValue", { ...props.account, [key]: value });
 }
 </script>
 
@@ -72,5 +67,9 @@ function changeValue(e: Event, key: keyof Account) {
 
 .form-row__control:nth-child(3):last-child {
   width: calc(100% / 2 - 4px);
+}
+
+.form-row__control--dirty:invalid {
+  border: 1px solid orangered;
 }
 </style>
