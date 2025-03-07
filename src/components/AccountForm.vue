@@ -1,5 +1,6 @@
 <template>
   <form class="account-form">
+    <Labels />
     <InputsRow
       v-for="account in accounts"
       :key="account.id"
@@ -14,6 +15,7 @@
 import { computed } from "vue";
 import { useStore } from "@/store";
 import { Account } from "@/store";
+import Labels from "./Labels.vue";
 import InputsRow from "./InputsRow";
 
 const accounts = computed(() => store.accounts);
