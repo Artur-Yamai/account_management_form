@@ -16,5 +16,6 @@ const store = useStore();
   align-items: center;
   gap: 1rem;
   margin: 0.75rem;
+  margin-bottom: 2rem;
 }
 </style>

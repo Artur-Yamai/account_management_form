@@ -13,7 +13,7 @@ import question from "@/assets/question.svg";
 <style>
 .tool-tip {
   padding: 0.5rem;
-  margin: 0 0.5rem;
+  margin: 0.5rem 0 2rem;
   border-radius: 4px;
   color: rgb(75, 75, 75);
   background-color: #eef4fa;
