@@ -28,8 +28,8 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits, computed } from "vue";
-import { LabelBox, SelectBox, TextBox } from "@/components";
-import { Account, RecordType, Label } from "@/store";
+import { SelectBox, TextBox } from "@/components";
+import { Account, RecordType, Label } from "@/Types";
 
 const emits = defineEmits(["changeValue"]);
 const props = defineProps<{ account: Account }>();

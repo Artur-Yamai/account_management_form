@@ -1,21 +1,7 @@
 import { defineStore } from "pinia";
 import { generateId } from "./utils";
-
-//хоть убейте, но не знаю в чем проблема - этот файл никак не хочет экспортировать типы
-export enum RecordType {
-  local = "Локальная",
-  ldap = "LDAP",
-}
-
-export type Label = { text: string };
-
-export interface Account {
-  id: string;
-  label: Label[];
-  type: RecordType;
-  login: string;
-  password: string | null;
-}
+import type { Account } from "./Types";
+import { RecordType } from "./Types";
 
 const STORAGE_KEY = "accounts";
 

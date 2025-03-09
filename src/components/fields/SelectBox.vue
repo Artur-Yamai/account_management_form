@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
-import { RecordType } from "@/store";
+import { RecordType } from "@/Types";
 
 defineProps<{ type: RecordType }>();
 const emits = defineEmits(["change"]);
